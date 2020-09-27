@@ -19,18 +19,29 @@ function initDemoMap() {
     }
   );
 
+
+  var Relief = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.{ext}', {
+    attribution: '',
+    subdomains: 'abcd',
+      minZoom: 3,
+    maxZoom: 13,
+    ext: 'png'
+  }
+  );
+
   var baseLayers = {
     Satellite: Esri_WorldImagery,
-    "Grey Canvas": Esri_DarkGreyCanvas
+    "Grey Canvas": Esri_DarkGreyCanvas,
+    "Relief" : Relief
   };
 
   var map = L.map("map", {
-    layers: [Esri_WorldImagery]
+    layers: [Esri_DarkGreyCanvas]
   });
 
   var layerControl = L.control.layers(baseLayers);
   layerControl.addTo(map);
-  map.setView([-22, 150], 5);
+  map.setView([43, 12], 8);
 
   return {
     map: map,
@@ -43,49 +54,53 @@ var mapStuff = initDemoMap();
 var map = mapStuff.map;
 var layerControl = mapStuff.layerControl;
 
-// load data (u, v grids) from somewhere (e.g. https://github.com/danwild/wind-js-server)
-$.getJSON("wind-gbr.json", function(data) {
-  var velocityLayer = L.velocityLayer({
-    displayValues: true,
-    displayOptions: {
-      velocityType: "GBR Wind",
-      displayPosition: "bottomleft",
-      displayEmptyString: "No wind data"
-    },
-    data: data,
-    maxVelocity: 10
-  });
-
-  layerControl.addOverlay(velocityLayer, "Wind - Great Barrier Reef");
-});
-
-$.getJSON("water-gbr.json", function(data) {
-  var velocityLayer = L.velocityLayer({
-    displayValues: true,
-    displayOptions: {
-      velocityType: "GBR Water",
-      displayPosition: "bottomleft",
-      displayEmptyString: "No water data"
-    },
-    data: data,
-    maxVelocity: 0.6,
-    velocityScale: 0.1 // arbitrary default 0.005
-  });
-
-  layerControl.addOverlay(velocityLayer, "Ocean Current - Great Barrier Reef");
-});
-
-$.getJSON("wind-global.json", function(data) {
+// load data (u, v grids) from somewhere (e.g. http://52.204.147.213/latest)
+$.getJSON("http://52.204.147.213/latest", function(data) {
   var velocityLayer = L.velocityLayer({
     displayValues: true,
     displayOptions: {
       velocityType: "Global Wind",
       displayPosition: "bottomleft",
-      displayEmptyString: "No wind data"
+      displayEmptyString: "No wind data",
+      speedUnit: "k/h"
     },
     data: data,
-    maxVelocity: 15
-  });
+    maxVelocity: 8,
+    lineWidth: 2,
+    particleAge: 90,
+    velocityScale: 0.02,
+    }).addTo(map);
 
-  layerControl.addOverlay(velocityLayer, "Wind - Global");
+  //layerControl.addOverlay(velocityLayer, "Wind - Great Barrier Reef");
 });
+
+// $.getJSON("water-gbr.json", function(data) {
+//   var velocityLayer = L.velocityLayer({
+//     displayValues: true,
+//     displayOptions: {
+//       velocityType: "GBR Water",
+//       displayPosition: "bottomleft",
+//       displayEmptyString: "No water data"
+//     },
+//     data: data,
+//     maxVelocity: 0.6,
+//     velocityScale: 0.1 // arbitrary default 0.005
+//   });
+
+//   layerControl.addOverlay(velocityLayer, "Ocean Current - Great Barrier Reef");
+// });
+
+// $.getJSON("wind-global.json", function(data) {
+//   var velocityLayer = L.velocityLayer({
+//     displayValues: true,
+//     displayOptions: {
+//       velocityType: "Global Wind",
+//       displayPosition: "bottomleft",
+//       displayEmptyString: "No wind data"
+//     },
+//     data: data,
+//     maxVelocity: 15
+//   });
+
+//   layerControl.addOverlay(velocityLayer, "Wind - Global");
+// });
