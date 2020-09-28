@@ -1,3 +1,7 @@
+// Server
+// sudo apt-get install python-netcdf4 
+
+
 function initDemoMap() {
   var Esri_WorldImagery = L.tileLayer(
     "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
@@ -55,7 +59,9 @@ var map = mapStuff.map;
 var layerControl = mapStuff.layerControl;
 
 // load data (u, v grids) from somewhere (e.g. http://52.204.147.213/latest)
-$.getJSON("http://52.204.147.213/latest", function(data) {
+//$.getJSON("http://52.204.147.213/latest", function(data) {
+$.getJSON("1400-wind-surface-level-gfs-1.0.json", function(data) {
+  alert("caricato");
   var velocityLayer = L.velocityLayer({
     displayValues: true,
     displayOptions: {
