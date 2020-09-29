@@ -69,7 +69,7 @@ var velocityLayer = L.velocityLayer({
 
 // load data (u, v grids) from somewhere (e.g. http://52.204.147.213/latest)
 //$.getJSON("wind-gbr.json", function(data) {
-$.getJSON("1400-wind-surface-level-gfs-1.0.json", function(data) {
+$.getJSON("1600-wind-surface-level-gfs-1.0.json", function(data) {
     //alert(data);
     velocityLayer.setData(data)
 
