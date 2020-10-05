@@ -321,6 +321,41 @@ L.VelocityLayer = (L.Layer ? L.Layer : L.Class).extend({
 
         this.fire("load");
     },
+    degToCard: function degToCard(deg){
+        if (deg>11.25 && deg<33.75){
+          return "NNE";
+        }else if (deg>33.75 && deg<56.25){
+          return "ENE";
+        }else if (deg>56.25 && deg<78.75){
+          return "E";
+        }else if (deg>78.75 && deg<101.25){
+          return "ESE";
+        }else if (deg>101.25 && deg<123.75){
+          return "ESE";
+        }else if (deg>123.75 && deg<146.25){
+          return "SE";
+        }else if (deg>146.25 && deg<168.75){
+          return "SSE";
+        }else if (deg>168.75 && deg<191.25){
+          return "S";
+        }else if (deg>191.25 && deg<213.75){
+          return "SSW";
+        }else if (deg>213.75 && deg<236.25){
+          return "SW";
+        }else if (deg>236.25 && deg<258.75){
+          return "WSW";
+        }else if (deg>258.75 && deg<281.25){
+          return "W";
+        }else if (deg>281.25 && deg<303.75){
+          return "WNW";
+        }else if (deg>303.75 && deg<326.25){
+          return "NW";
+        }else if (deg>326.25 && deg<348.75){
+          return "NNW";
+        }else{
+          return "N"; 
+        }
+      },
     updateInfo: function updateInfo(pos) {
         //        var gridValue = this.options.leafletVelocity._windy.interpolatePoint(pos.lng, pos.lat);
 
@@ -334,12 +369,13 @@ L.VelocityLayer = (L.Layer ? L.Layer : L.Class).extend({
             var velocityAbs = Math.sqrt(Math.pow(gridValue[0], 2) + Math.pow(gridValue[1], 2));
             var velocityDir = Math.atan2(gridValue[0] / velocityAbs, gridValue[1] / velocityAbs);
             var velocityDirToDegrees = velocityDir * 180 / Math.PI + 180;
+            var dirCard = this.degToCard(velocityDirToDegrees);
 
             var velocityAbs = Math.sqrt(Math.pow(gridValue[0], 2) + Math.pow(gridValue[1], 2)); // Default is m/s
 
             var vel = velocityAbs * 3.6;
 
-            htmlOut = " Direzione : <strong>" + velocityDirToDegrees.toFixed(0) + "°</strong>" + ", " + " Velocità: <strong>" + vel.toFixed(1) + " </strong> " + "km/h";
+            htmlOut = " Direzione : <strong>" + dirCard + " (" + velocityDirToDegrees.toFixed(0) + "°)" + "</strong>" + " - " + " Velocità: <strong>" + vel.toFixed(1) + " </strong> " + "km/h";
         } else {
             htmlOut = "";
         }
