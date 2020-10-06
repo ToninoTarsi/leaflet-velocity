@@ -121,13 +121,28 @@ var marker = new L.Marker([43.357222, 12.749444], { icon: starIcon }).addTo(map)
 var popLocation = undefined;
 
 
-map.on('click', function(e) {
+
+
+map.on('mousedown', function(e) {
+    pressTimer = window.setTimeout(function() {
     popLocation = e.latlng;
     marker.setLatLng(popLocation);
     updateInfo(popLocation);
-
-    //alert(info);
+    console.log('something')
+    },500);  
 });
+  
+  map.on('mouseup', function() {
+    clearTimeout(pressTimer);
+  });
+
+
+// map.on('click', function(e) {
+//     popLocation = e.latlng;
+//     marker.setLatLng(popLocation);
+//     updateInfo(popLocation);
+//     console.log('something');
+// });
 
 // load data (u, v grids) from somewhere (e.g. http://52.204.147.213/latest)
 //$.getJSON("wind-gbr.json", function(data) {
