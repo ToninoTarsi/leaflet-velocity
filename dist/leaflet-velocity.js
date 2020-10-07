@@ -360,6 +360,9 @@ L.VelocityLayer = (L.Layer ? L.Layer : L.Class).extend({
         //        var gridValue = this.options.leafletVelocity._windy.interpolatePoint(pos.lng, pos.lat);
 
         var gridValue = this._windy.interpolatePoint(pos.lng, pos.lat);
+        var gridValue = this._windy.getGridValue(pos.lng, pos.lat);
+
+        
         //alert(gridValue);
 
         var htmlOut = "";
@@ -683,6 +686,23 @@ var Windy = function Windy(params) {
      * @param φ {Float} Latitude
      * @returns {Object}
      */
+
+    var getGridValue = function getGridValue(λ, φ) {
+        if (!grid) return null;
+        var i = floorMod(λ - λ0, 360) / Δλ; // calculate longitude index in wrapped range [0, 360)
+
+        var j = (φ0 - φ) / Δφ; // calculate latitude index in direction +90 to -90
+
+        var fi = Math.floor(i);
+        var fj = Math.floor(j);
+        var row;
+        if (row = grid[fj]) {
+            var g00 = row[fi];
+            var vel = Math.sqrt(Math.pow(g00[0], 2) + Math.pow(g00[1], 2));
+            return [g00[0],g00[1],vel];
+        }
+
+    }
 
 
     var interpolate = function interpolate(λ, φ) {
@@ -1038,6 +1058,7 @@ var Windy = function Windy(params) {
         stop: stop,
         createField: createField,
         interpolatePoint: interpolate,
+        getGridValue: getGridValue,
         setData: setData,
         setOptions: setOptions
     };
