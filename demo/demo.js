@@ -128,7 +128,7 @@ map.on('mousedown', function(e) {
     popLocation = e.latlng;
     marker.setLatLng(popLocation);
     updateInfo(popLocation);
-    console.log('something')
+    //console.log('something')
     },500);  
 });
   
