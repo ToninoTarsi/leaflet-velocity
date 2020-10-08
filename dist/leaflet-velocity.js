@@ -359,7 +359,7 @@ L.VelocityLayer = (L.Layer ? L.Layer : L.Class).extend({
     updateInfo: function updateInfo(pos) {
         //        var gridValue = this.options.leafletVelocity._windy.interpolatePoint(pos.lng, pos.lat);
 
-        var gridValue = this._windy.interpolatePoint(pos.lng, pos.lat);
+        //var gridValue = this._windy.interpolatePoint(pos.lng, pos.lat);
         var gridValue = this._windy.getGridValue(pos.lng, pos.lat);
 
         
